@@ -23,4 +23,4 @@ class Statements:
 
     @staticmethod
     def check_table():
-        return """SELECT id FROM vacancies LIMIT 1"""
+        return """SELECT id FROM vacancies ORDER BY id ASC LIMIT 1"""

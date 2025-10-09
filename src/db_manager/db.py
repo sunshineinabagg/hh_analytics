@@ -13,6 +13,9 @@ class Database:
         if self._conn is None:
             self._conn = await aiosqlite.connect(self._db_name)
 
+    async def close_connection(self):
+        await self._conn.close()
+
     async def create_table(self):
         async with self._conn.cursor() as cursor:
             await cursor.execute(Statements.create_table())
@@ -20,12 +23,9 @@ class Database:
         return await self.check_table()
 
     async def check_table(self):
-        async with self._conn.cursor() as cursor:
-            result = await cursor.execute(Statements.check_table())
-        if result.description[0][1] is None:
-            return False
-        else:
-            return True
+        async with self._conn.execute(Statements.check_table()) as cursor:
+            result = await cursor.fetchone()
+        return result
 
     async def insert_vacancy(self, vacancy):
         async with self._conn.cursor() as cursor:

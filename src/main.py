@@ -1,12 +1,15 @@
 import asyncio
+import logging
+
 from nest_asyncio import apply
 
 import httpx
 
 from db_manager.db import Database
-from data_collector.utils import formalize_data, roles
-from data_collector.hh_api import HeadHunterApi
-from models.vacancy_model import Vacancy
+from data_collector.collector import Collector
+
+logging.basicConfig(level=logging.INFO)
+logging.getLogger('httpx').setLevel(logging.WARNING)
 
 apply()
 db = Database()
@@ -14,26 +17,24 @@ db = Database()
 
 async def start_collect():
     client = httpx.AsyncClient()
-    hh = HeadHunterApi(client)
-    for i in range(125139540, 125137540, -1):
-        result = await hh.get_vacancy(i)
-        formatted_data: Vacancy = await formalize_data(result.text)
-        if formatted_data is None:
-            print('Mimo')
-        else:
-            print('Cur vacancy is ' + formatted_data.id)
-            if formatted_data.professional_role_id in roles:
-                await db.insert_vacancy(formatted_data)
+    collector = Collector(client, db)
+    await collector.start()
     await client.aclose()
 
 
 async def main():
+    logging.info('Application is running...')
     await db.connect()
     check_db = await db.create_table()
-    if not check_db:
+    if check_db is None:
         asyncio.run(start_collect())
-    db.connect().close()
+    # start_analytics()
+    await db.close_connection()
+    logging.info('End.')
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        print(f'Something went wrong: {str(e)}')
