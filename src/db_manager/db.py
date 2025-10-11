@@ -1,12 +1,11 @@
 import aiosqlite
 
-from src.db_manager.settings import DB_NAME
 from src.db_manager.statements import Statements
 
 
 class Database:
     def __init__(self):
-        self._db_name = DB_NAME
+        self._db_name = 'db.sqlite'
         self._conn: aiosqlite.Connection | None = None
 
     async def connect(self):

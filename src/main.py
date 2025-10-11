@@ -28,6 +28,8 @@ async def main():
     check_db = await db.create_table()
     if check_db is None:
         asyncio.run(start_collect())
+    else:
+        logging.info('Database is not empty.')
     # start_analytics()
     await db.close_connection()
     logging.info('End.')

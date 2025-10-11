@@ -2,8 +2,9 @@ import json
 
 from src.models.vacancy_model import Vacancy
 
-roles = (156, 160, 10, 12, 150, 25, 165, 34, 36, 73, 155, 96, 164, 104, 157, 107, 112, 113,
-         148, 114, 116, 121, 124, 125, 126)
+
+async def json_loads(raw_data: str | bytes) -> dict:
+    return json.loads(raw_data)
 
 
 async def skills_check(skills):
@@ -14,10 +15,6 @@ async def skills_check(skills):
         return None
     else:
         return result
-
-
-async def json_loads(raw_data: str | bytes) -> dict:
-    return json.loads(raw_data)
 
 
 async def formalize_data(data: dict):
