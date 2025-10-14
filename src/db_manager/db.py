@@ -1,35 +1,44 @@
 import aiosqlite
+import sqlite3
 
-from src.db_manager.settings import DB_NAME
-from src.db_manager.statements import Statements
+from src.db_manager.statements import CollectorStatements, AnalyticStatements
 
 
 class Database:
     def __init__(self):
-        self._db_name = DB_NAME
-        self._conn: aiosqlite.Connection | None = None
+        self._db_name = 'db.sqlite'
+        self._conn: aiosqlite.Connection | sqlite3.Connection | None = None
 
-    async def connect(self):
+    def connect(self):
+        if self._conn is None:
+            self._conn = sqlite3.connect(self._db_name)
+
+    def disconnect(self):
+        self._conn.close()
+        self._conn = None
+
+    async def async_connect(self):
         if self._conn is None:
             self._conn = await aiosqlite.connect(self._db_name)
 
-    async def close_connection(self):
+    async def async_disconnect(self):
         await self._conn.close()
+        self._conn = None
 
     async def create_table(self):
         async with self._conn.cursor() as cursor:
-            await cursor.execute(Statements.create_table())
+            await cursor.execute(CollectorStatements.create_table())
         await self._conn.commit()
         return await self.check_table()
 
     async def check_table(self):
-        async with self._conn.execute(Statements.check_table()) as cursor:
+        async with self._conn.execute(CollectorStatements.check_table()) as cursor:
             result = await cursor.fetchone()
         return result
 
     async def insert_vacancy(self, vacancy):
         async with self._conn.cursor() as cursor:
-            statement = Statements.insert_vacancy()
+            statement = CollectorStatements.insert_vacancy()
             await cursor.execute(statement,
                                  (vacancy.id,
                                   f'"{vacancy.name}"',
@@ -43,3 +52,10 @@ class Database:
                                   f'"{vacancy.professional_role}"',
                                   f'"{vacancy.experience}"'))
         await self._conn.commit()
+
+    def select_for_analytics(self, statement):
+        cursor = self._conn.cursor()
+        cursor.execute(
+            AnalyticStatements.choose_statement(statement)
+        )
+        return cursor.fetchall()

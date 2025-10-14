@@ -16,20 +16,26 @@ db = Database()
 
 
 async def start_collect():
-    client = httpx.AsyncClient()
-    collector = Collector(client, db)
-    await collector.start()
-    await client.aclose()
+    await db.async_connect()
+    check_db = await db.create_table()
+    if check_db is None:
+        client = httpx.AsyncClient()
+        await Collector(client, db).start()
+        await client.aclose()
+    else:
+        logging.info('Database is not empty.')
+    await db.async_disconnect()
+
+# def start_analytics():
+#     db.connect()
+#     Analizator(db).start()
+#     db.disconnect()
 
 
 async def main():
     logging.info('Application is running...')
-    await db.connect()
-    check_db = await db.create_table()
-    if check_db is None:
-        asyncio.run(start_collect())
+    await start_collect()
     # start_analytics()
-    await db.close_connection()
     logging.info('End.')
 
 

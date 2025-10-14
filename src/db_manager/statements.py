@@ -1,4 +1,4 @@
-class Statements:
+class CollectorStatements:
 
     @staticmethod
     def create_table():
@@ -24,3 +24,33 @@ class Statements:
     @staticmethod
     def check_table():
         return """SELECT id FROM vacancies ORDER BY id ASC LIMIT 1"""
+
+
+class AnalyticStatements:
+    @classmethod
+    def choose_statement(cls, statement):
+        statements = {
+            'get_salary_by_role': cls.get_salary_by_role(),
+            'get_salary_by_city': cls.get_salary_by_city(),
+        }
+        method = statements.get(statement)
+        return method()
+    @staticmethod
+    def get_salary_by_role():
+        return ("""
+        SELECT
+            professional_role,
+            salary_bottom,
+            salary_top
+        FROM vacancies
+        """)
+
+    @staticmethod
+    def get_salary_by_city():
+        return ("""
+        SELECT
+            city,
+            salary_bottom,
+            salary_top
+        FROM vacancies
+        """)
