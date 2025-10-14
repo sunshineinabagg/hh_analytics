@@ -1,4 +1,4 @@
-class Statements:
+class CollectorStatements:
 
     @staticmethod
     def create_table():
@@ -24,3 +24,10 @@ class Statements:
     @staticmethod
     def check_table():
         return """SELECT id FROM vacancies ORDER BY id ASC LIMIT 1"""
+
+
+class AnalyticStatements:
+
+    @classmethod
+    def choose_statement(cls, statement):
+        pass
