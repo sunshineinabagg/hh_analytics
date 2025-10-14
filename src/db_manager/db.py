@@ -45,6 +45,7 @@ class Database:
                                   f'"{vacancy.city}"',
                                   f'"{vacancy.salary_bottom}"',
                                   f'"{vacancy.salary_top}"',
+                                  f'"{vacancy.currency}"',
                                   f'"{vacancy.published_at}"',
                                   f'"{vacancy.employer_name}"',
                                   f'"{vacancy.key_skills}"',

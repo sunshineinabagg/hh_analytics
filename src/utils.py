@@ -23,10 +23,9 @@ async def formalize_data(data: dict):
     vacancy = Vacancy(id=data['id'],
                       name=data['name'],
                       city=data['address']['city'] if data.get('address') else None,
-                      salary_bottom=str(data['salary_range']['from']) + data['salary_range']['currency'] if data.get(
-                          'salary_range') else None,
-                      salary_top=str(data['salary_range']['to']) + data['salary_range']['currency'] if data.get(
-                          'salary_range') else None,
+                      salary_bottom=data['salary_range']['from'] if data.get('salary_range') else None,
+                      salary_top=data['salary_range']['to'] if data.get('salary_range') else None,
+                      currency=data['salary_range']['currency'] if data.get('salary_range') else None,
                       published_at=data['published_at'],
                       employer_name=data['employer']['name'],
                       key_skills=await skills_check(data['key_skills']),
