@@ -19,7 +19,7 @@ class HeadHunterApi:
                                                   'Authorization': f'Bearer {self.__token}'},
                                          **kwargs)
         if response.status_code != 200:
-            logging.info(f'Ошибка: {response.text}\n Код: {response.status_code}')
+            logging.info(f'Error: {response.text}\tCode: {response.status_code}')
         return await json_loads(response.text)
 
     async def get_professional_roles(self):
