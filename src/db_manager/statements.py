@@ -8,6 +8,7 @@ class CollectorStatements:
                 city TEXT,
                 salary_bottom TEXT,
                 salary_top TEXT,
+                currency TEXT,
                 published_at TEXT,
                 employer_name TEXT,
                 key_skills TEXT,
@@ -18,7 +19,7 @@ class CollectorStatements:
     @staticmethod
     def insert_vacancy():
         return (f'''INSERT INTO vacancies
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         ''')
 
     @staticmethod
@@ -34,7 +35,7 @@ class AnalyticStatements:
             'get_salary_by_city': cls.get_salary_by_city(),
         }
         method = statements.get(statement)
-        return method()
+        return method
     @staticmethod
     def get_salary_by_role():
         return ("""
