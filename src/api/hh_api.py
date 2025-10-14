@@ -1,21 +1,25 @@
+import logging
 from datetime import date, timedelta
 import httpx
-
-from src.data_collector.settings import (
-    API_URL, HH_USER_AGENT, token)
-from src.data_collector.utils import json_loads
+import private_settings
+from src.utils import json_loads
 
 
 class HeadHunterApi:
+    _API_URL = 'https://api.hh.ru'
+    _HH_USER_AGENT = 'hh_analytics/1.0 (sunshineinabagg@yandex.ru)'
+    __token = private_settings.TOKEN
+
     def __init__(self, client: httpx.AsyncClient):
         self.client = client
-        self._token = token
 
     async def _send_request(self, method: str, **kwargs):
-        response = await self.client.get(url=API_URL+method,
-                                         headers={'HH-User-Agent': HH_USER_AGENT,
-                                                  'Authorization': f'Bearer {self._token}'},
+        response = await self.client.get(url=self._API_URL + method,
+                                         headers={'HH-User-Agent': self._HH_USER_AGENT,
+                                                  'Authorization': f'Bearer {self.__token}'},
                                          **kwargs)
+        if response.status_code != 200:
+            logging.info(f'Ошибка: {response.text}\n Код: {response.status_code}')
         return await json_loads(response.text)
 
     async def get_professional_roles(self):
