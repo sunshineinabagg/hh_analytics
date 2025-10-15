@@ -7,7 +7,7 @@ import httpx
 
 from db_manager.db import Database
 from data_collector.collector import Collector
-
+from analytics.analyzator import Analyzator
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('httpx').setLevel(logging.WARNING)
 
@@ -26,16 +26,17 @@ async def start_collect():
         logging.info('Database is not empty.')
     await db.async_disconnect()
 
-# def start_analytics():
-#     db.connect()
-#     Analizator(db).start()
-#     db.disconnect()
+def start_analytics():
+    db.connect()
+    result = Analyzator(db).analyze_salaries_by_role()
+    print(result)
+    db.disconnect()
 
 
 async def main():
     logging.info('Application is running...')
     await start_collect()
-    # start_analytics()
+    start_analytics()
     logging.info('End.')
 
 

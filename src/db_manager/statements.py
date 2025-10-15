@@ -33,6 +33,7 @@ class AnalyticStatements:
         statements = {
             'get_salary_by_role': cls.get_salary_by_role(),
             'get_salary_by_city': cls.get_salary_by_city(),
+            'get_roles_count': cls.get_roles_count(),
         }
         method = statements.get(statement)
         return method
@@ -42,7 +43,8 @@ class AnalyticStatements:
         SELECT
             professional_role,
             salary_bottom,
-            salary_top
+            salary_top,
+            currency
         FROM vacancies
         """)
 
@@ -52,6 +54,17 @@ class AnalyticStatements:
         SELECT
             city,
             salary_bottom,
-            salary_top
+            salary_top,
+            currency
         FROM vacancies
         """)
+
+    @staticmethod
+    def get_roles_count():
+        return ("""
+        SELECT
+            professional_role
+        FROM vacancies
+        """)
+
+    # @staticmethod
