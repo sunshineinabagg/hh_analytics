@@ -2,7 +2,8 @@ import pandas as pd
 
 from src.db_manager.db import Database
 
-class Analyzator:
+
+class Analyzer:
     def __init__(self, db: Database):
         self._db = db
 
@@ -98,7 +99,8 @@ class Analyzator:
     def analyze_salaries_by_experience(self):
         raw_data = self._db.select_for_analytics('get_salary_by_experience')
 
-        df = pd.DataFrame(raw_data, columns=['experience', 'professional_role', 'salary_bottom', 'salary_top', 'currency'])
+        df = pd.DataFrame(raw_data,
+                          columns=['experience', 'professional_role', 'salary_bottom', 'salary_top', 'currency'])
         for col in ['experience', 'professional_role', 'currency']:
             df[col] = df[col].str.strip('"')
 
@@ -181,7 +183,8 @@ class Analyzator:
     def analyze_vacancy_dynamics(self):
         raw_data = self._db.select_for_analytics('get_vacancy_dynamics')
 
-        df = pd.DataFrame(raw_data, columns=['published_at', 'salary_bottom', 'salary_top', 'currency', 'professional_role'])
+        df = pd.DataFrame(raw_data,
+                          columns=['published_at', 'salary_bottom', 'salary_top', 'currency', 'professional_role'])
         for col in ['currency', 'professional_role']:
             df[col] = df[col].str.strip('"')
 
