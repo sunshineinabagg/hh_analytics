@@ -34,9 +34,15 @@ class AnalyticStatements:
             'get_salary_by_role': cls.get_salary_by_role(),
             'get_salary_by_city': cls.get_salary_by_city(),
             'get_roles_count': cls.get_roles_count(),
+            'get_salary_by_experience': cls.get_salary_by_experience(),
+            'get_key_skills': cls.get_key_skills(),
+            'get_schedule_analysis': cls.get_schedule_analysis(),
+            'get_vacancy_dynamics': cls.get_vacancy_dynamics(),
+            'get_employer_analysis': cls.get_employer_analysis()
         }
         method = statements.get(statement)
         return method
+
     @staticmethod
     def get_salary_by_role():
         return ("""
@@ -67,4 +73,60 @@ class AnalyticStatements:
         FROM vacancies
         """)
 
-    # @staticmethod
+    @staticmethod
+    def get_salary_by_experience():
+        return ("""
+        SELECT
+            experience,
+            professional_role,
+            salary_bottom,
+            salary_top,
+            currency
+        FROM vacancies
+        """)
+
+    @staticmethod
+    def get_key_skills():
+        return ("""
+        SELECT
+            professional_role,
+            key_skills
+        FROM vacancies
+        """)
+
+    @staticmethod
+    def get_schedule_analysis():
+        return ("""
+        SELECT
+            schedule,
+            salary_bottom,
+            salary_top,
+            currency,
+            published_at
+        FROM vacancies
+        """)
+
+    @staticmethod
+    def get_vacancy_dynamics():
+        return ("""
+        SELECT
+            published_at,
+            salary_bottom,
+            salary_top,
+            currency,
+            professional_role
+        FROM vacancies
+        """)
+
+    @staticmethod
+    def get_employer_analysis():
+        return ("""
+        SELECT
+            employer_name,
+            professional_role,
+            key_skills,
+            salary_bottom,
+            salary_top,
+            currency
+        FROM vacancies
+        """)
