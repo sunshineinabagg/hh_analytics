@@ -1,4 +1,4 @@
-class Statements:
+class CollectorStatements:
 
     @staticmethod
     def create_table():
@@ -8,6 +8,7 @@ class Statements:
                 city TEXT,
                 salary_bottom TEXT,
                 salary_top TEXT,
+                currency TEXT,
                 published_at TEXT,
                 employer_name TEXT,
                 key_skills TEXT,
@@ -18,9 +19,16 @@ class Statements:
     @staticmethod
     def insert_vacancy():
         return (f'''INSERT INTO vacancies
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         ''')
 
     @staticmethod
     def check_table():
         return """SELECT id FROM vacancies ORDER BY id ASC LIMIT 1"""
+
+
+class AnalyticStatements:
+
+    @classmethod
+    def choose_statement(cls, statement):
+        pass
