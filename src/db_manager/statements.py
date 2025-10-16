@@ -47,42 +47,81 @@ class AnalyticStatements:
     def get_salary_by_role():
         return ("""
         SELECT
-            professional_role,
+            vacancies.professional_role,
             salary_bottom,
-            salary_top,
-            currency
+        salary_top,
+        currency,
+        vac_count.count
         FROM vacancies
+        JOIN (
+            SELECT professional_role, COUNT(id) as count
+            FROM vacancies
+            GROUP BY professional_role
+        ) as vac_count
+        ON
+            vacancies.professional_role = vac_count.professional_role
+        WHERE
+            currency = '"RUR"'
+            AND salary_bottom != '"None"'
+            AND salary_top != '"None"'
         """)
 
     @staticmethod
     def get_salary_by_city():
         return ("""
         SELECT
-            city,
-            salary_bottom,
-            salary_top,
-            currency
-        FROM vacancies
+            v.city,
+            v.salary_bottom,
+            v.salary_top,
+            v.currency,
+            c.total_vacancies
+        FROM vacancies AS v
+        JOIN (
+            SELECT city, COUNT(id) as total_vacancies
+            FROM vacancies
+            WHERE city != '"None"'
+            GROUP BY city
+        ) as c
+        ON v.city = c.city
+        WHERE
+            v.currency = '"RUR"'
+            AND v.salary_bottom != '"None"'
+            AND v.salary_top != '"None"'
+            AND v.city != '"None"'
         """)
 
     @staticmethod
     def get_roles_count():
         return ("""
         SELECT
-            professional_role
+            professional_role,
+            COUNT(id) AS count_vacancies
         FROM vacancies
+        GROUP BY professional_role
         """)
 
     @staticmethod
     def get_salary_by_experience():
         return ("""
         SELECT
-            experience,
-            professional_role,
-            salary_bottom,
-            salary_top,
-            currency
-        FROM vacancies
+            v.experience,
+            v.professional_role,
+            v.salary_bottom,
+            v.salary_top,
+            v.currency,
+            total.total_vacancies
+        FROM vacancies AS v
+        JOIN (
+            SELECT experience, professional_role, COUNT(*) AS total_vacancies
+            FROM vacancies
+            GROUP BY experience, professional_role
+        ) AS total
+        ON v.experience = total.experience AND v.professional_role = total.professional_role
+        WHERE
+            v.currency = '"RUR"'
+            AND v.salary_bottom != '"None"'
+            AND v.salary_top != '"None"'
+
         """)
 
     @staticmethod
