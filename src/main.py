@@ -7,6 +7,7 @@ import httpx
 
 from db_manager.db import Database
 from data_collector.collector import Collector
+from analytics.analyzer import Analyzer
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('httpx').setLevel(logging.WARNING)
@@ -26,16 +27,17 @@ async def start_collect():
         logging.info('Database is not empty.')
     await db.async_disconnect()
 
-# def start_analytics():
-#     db.connect()
-#     Analizator(db).start()
-#     db.disconnect()
+
+def start_analytics():
+    db.connect()
+    Analyzer(db).full_analysis()
+    db.disconnect()
 
 
 async def main():
     logging.info('Application is running...')
-    await start_collect()
-    # start_analytics()
+    # await start_collect()
+    start_analytics()
     logging.info('End.')
 
 
