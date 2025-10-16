@@ -131,18 +131,27 @@ class AnalyticStatements:
             professional_role,
             key_skills
         FROM vacancies
+        WHERE
+            key_skills != '"None"'
         """)
 
     @staticmethod
     def get_schedule_analysis():
         return ("""
         SELECT
-            schedule,
-            salary_bottom,
-            salary_top,
-            currency,
-            published_at
-        FROM vacancies
+            v.schedule,
+            v.salary_bottom,
+            v.salary_top,
+            v.currency,
+            v.published_at,
+            total.total_vacancies
+        FROM vacancies AS v
+        JOIN (
+            SELECT schedule, COUNT(*) AS total_vacancies
+            FROM vacancies
+            GROUP BY schedule
+        ) AS total
+        ON v.schedule = total.schedule
         """)
 
     @staticmethod
