@@ -56,8 +56,8 @@ class Collector:
         await self._set_roles()
         await self._set_range()
         tasks = set()
-        semaphore = asyncio.Semaphore(100)
-        for vacancy_id in range(self._range, self._range - 1000, -1):
+        semaphore = asyncio.Semaphore(10)
+        for vacancy_id in range(self._range, self._range - 5000, -1):
             tasks.add(asyncio.create_task(self._process_vacancy(vacancy_id, semaphore)))
         starting_time = time.time()
         await asyncio.gather(*tasks)
