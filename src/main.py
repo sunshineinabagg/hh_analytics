@@ -36,7 +36,7 @@ def start_analytics():
 
 async def main():
     logging.info('Application is running...')
-    # await start_collect()
+    await start_collect()
     start_analytics()
     logging.info('End.')
 
