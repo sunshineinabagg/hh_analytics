@@ -15,12 +15,11 @@ class HeadHunterApi:
         self.client = client
 
     async def _send_request(self, method: str, **kwargs):
-        need_retry = False
-        while not need_retry:
+        for attempt in (1, 2, 3):
             response: httpx.Response = await self.__send_request(method=method, **kwargs)
             if response.status_code == 429:
-                need_retry = True
-                await asyncio.sleep(1)
+                logging.info(f'Request {response.url} has caught code 429. That was {attempt} attempt')
+                await asyncio.sleep(attempt)
             else:
                 return await json_loads(response.text)
 
