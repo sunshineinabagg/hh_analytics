@@ -1,3 +1,5 @@
+import logging
+
 import aiosqlite
 import sqlite3
 
@@ -52,7 +54,7 @@ class Database:
                                   f'"{vacancy.schedule}"',
                                   f'"{vacancy.professional_role}"',
                                   f'"{vacancy.experience}"'))
-        await self._conn.commit()
+            await self._conn.commit()
 
     def select_for_analytics(self, statement):
         cursor = self._conn.cursor()

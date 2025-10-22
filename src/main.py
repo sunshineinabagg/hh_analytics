@@ -37,7 +37,7 @@ def start_analytics():
 async def main():
     logging.info('Application is running...')
     await start_collect()
-    start_analytics()
+    # start_analytics()
     logging.info('End.')
 
 
@@ -45,4 +45,4 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except Exception as e:
-        print(f'Something went wrong: {str(e)}')
+        logging.warning(f'Something went wrong: {str(e)}')

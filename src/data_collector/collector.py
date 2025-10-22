@@ -42,6 +42,9 @@ class Collector:
     async def _process_vacancy(self, vacancy_id: int, semaphore: asyncio.Semaphore):
         async with semaphore:
             raw_vacancy = await self._hh.get_vacancy(vacancy_id)
+            if not isinstance(raw_vacancy, dict):
+                logging.info(f'Vacancy {vacancy_id} is not found')
+                return
             if raw_vacancy.get('professional_roles'):
                 for role in raw_vacancy['professional_roles']:
                     if role['id'] in self._roles.keys():
@@ -59,7 +62,7 @@ class Collector:
         semaphore = asyncio.Semaphore(10)
         step = 1000
         starting_time = time.time()
-        for ceiling in range(self._range, self._range - 5000, -step):
+        for ceiling in range(123796748, 122796748, -step):
             for vacancy_id in range(ceiling, ceiling - step, -1):
                 tasks.add(asyncio.create_task(self._process_vacancy(vacancy_id, semaphore)))
             await asyncio.gather(*tasks)
