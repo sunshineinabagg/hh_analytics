@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.db_manager.db import Database
+from db_manager.db import Database
 
 
 class Analyzer:

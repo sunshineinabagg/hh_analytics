@@ -2,9 +2,9 @@ import asyncio
 import time
 import logging
 from httpx import AsyncClient
-from src.api.hh_api import HeadHunterApi
-from src.db_manager.db import Database
-from src.utils import formalize_data
+from api.hh_api import HeadHunterApi
+from db_manager.db import Database
+from utils import formalize_data
 
 
 def process_roles(cluster):

@@ -3,7 +3,7 @@ import logging
 import aiosqlite
 import sqlite3
 
-from src.db_manager.statements import CollectorStatements, AnalyticStatements
+from db_manager.statements import CollectorStatements, AnalyticStatements
 
 
 class Database:

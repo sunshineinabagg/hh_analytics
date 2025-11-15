@@ -3,7 +3,7 @@ import logging
 from datetime import date, timedelta
 import httpx
 import private_settings
-from src.utils import json_loads
+from utils import json_loads
 
 
 class HeadHunterApi:

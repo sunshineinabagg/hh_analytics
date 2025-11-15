@@ -1,6 +1,6 @@
 import json
 
-from src.models.vacancy_model import Vacancy
+from models.vacancy_model import Vacancy
 
 
 async def json_loads(raw_data: str | bytes) -> dict:
