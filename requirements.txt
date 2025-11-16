@@ -2,3 +2,4 @@ httpx~=0.28.1
 pydantic~=2.11.9
 aiosqlite~=0.21.0
 pandas~=2.3.3
+nest_asyncio

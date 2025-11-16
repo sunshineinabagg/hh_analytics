@@ -57,6 +57,7 @@ class Collector:
                 logging.info(f'Vacancy {vacancy_id} was skipped')
         except Exception as e:
             logging.warning(f'Error while processing: {str(e)}')
+            pass
 
     async def start(self):
         await self._set_roles()
