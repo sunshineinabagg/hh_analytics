@@ -62,11 +62,11 @@ class Collector:
     async def start(self):
         await self._set_roles()
         await self._set_range()
-        tasks = set()
         semaphore = asyncio.Semaphore(10)
         step = 1000
         starting_time = time.time()
-        for ceiling in range(self._range, 125796748, -step):
+        for ceiling in range(118132964, 1, -step):
+            tasks = set()
             for vacancy_id in range(ceiling, ceiling - step, -1):
                 tasks.add(asyncio.create_task(self._process_vacancy(vacancy_id, semaphore)))
             await asyncio.gather(*tasks)
