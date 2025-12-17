@@ -7,7 +7,7 @@ import httpx
 
 from db_manager.db import Database
 from data_collector.collector import Collector
-from analytics.analyzer import Analyzer
+from analytics.extractor import Extractor
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('httpx').setLevel(logging.WARNING)
@@ -30,7 +30,7 @@ async def start_collect():
 
 def start_analytics():
     db.connect()
-    Analyzer(db).full_analysis()
+    Extractor(db).full_analysis()
     db.disconnect()
 
 
