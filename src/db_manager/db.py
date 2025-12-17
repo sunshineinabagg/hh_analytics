@@ -1,3 +1,5 @@
+import logging
+
 import aiosqlite
 import sqlite3
 
@@ -37,22 +39,25 @@ class Database:
         return result
 
     async def insert_vacancy(self, vacancy):
-        async with self._conn.cursor() as cursor:
-            statement = CollectorStatements.insert_vacancy()
-            await cursor.execute(statement,
-                                 (vacancy.id,
-                                  f'"{vacancy.name}"',
-                                  f'"{vacancy.city}"',
-                                  f'"{vacancy.salary_bottom}"',
-                                  f'"{vacancy.salary_top}"',
-                                  f'"{vacancy.currency}"',
-                                  f'"{vacancy.published_at}"',
-                                  f'"{vacancy.employer_name}"',
-                                  f'"{vacancy.key_skills}"',
-                                  f'"{vacancy.schedule}"',
-                                  f'"{vacancy.professional_role}"',
-                                  f'"{vacancy.experience}"'))
-        await self._conn.commit()
+        try:
+            async with self._conn.cursor() as cursor:
+                statement = CollectorStatements.insert_vacancy()
+                await cursor.execute(statement,
+                                     (vacancy.id,
+                                      f'"{vacancy.name}"',
+                                      f'"{vacancy.city}"',
+                                      f'"{vacancy.salary_bottom}"',
+                                      f'"{vacancy.salary_top}"',
+                                      f'"{vacancy.currency}"',
+                                      f'"{vacancy.published_at}"',
+                                      f'"{vacancy.employer_name}"',
+                                      f'"{vacancy.key_skills}"',
+                                      f'"{vacancy.schedule}"',
+                                      f'"{vacancy.professional_role}"',
+                                      f'"{vacancy.experience}"'))
+                await self._conn.commit()
+        except Exception as e:
+            logging.warning(f'Error while insert: {str(e)}')
 
     def select_for_analytics(self, statement):
         cursor = self._conn.cursor()
