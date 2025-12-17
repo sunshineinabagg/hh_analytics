@@ -32,7 +32,7 @@ class Analyzer:
 
     def analyze_salaries_by_role(self):
         """
-        Задача 1 1. Анализ уровня заработных плат по направлениям (`professional_role`)
+        Задача 1. Анализ уровня заработных плат по направлениям (`professional_role`)
         :return:
         pd.DataFrame: DataFrame, содержащий статистику зарплат, сгруппированную по профессиональным ролям,
                       включая долю вакансий с указанными зарплатами.
@@ -83,6 +83,8 @@ class Analyzer:
         summary = df.groupby('city').agg(
             avg_salary_bottom=('salary_bottom', 'mean'),
             avg_salary_top=('salary_top', 'mean'),
+            median_salary_bottom=('salary_bottom', 'median'),   # ← ДОБАВЛЕНО
+            median_salary_top=('salary_top', 'median'),         # ← ДОБАВЛЕНО
             min_salary=('salary_bottom', 'min'),
             max_salary=('salary_top', 'max'),
             std_salary_bottom=('salary_bottom', 'std'),
@@ -91,7 +93,6 @@ class Analyzer:
         ).reset_index()
 
         summary = summary.merge(df[['city', 'total_vacancies']].drop_duplicates(), on='city', how='left')
-
         summary['with_salary'] = summary['count_vacancies'] / summary['total_vacancies']
 
         return summary
@@ -134,6 +135,8 @@ class Analyzer:
         summary = df.groupby(['experience', 'professional_role']).agg(
             avg_salary_bottom=('salary_bottom', 'mean'),
             avg_salary_top=('salary_top', 'mean'),
+            median_salary_bottom=('salary_bottom', 'median'),   # ← ДОБАВЛЕНО
+            median_salary_top=('salary_top', 'median'),         # ← ДОБАВЛЕНО
             min_salary=('salary_bottom', 'min'),
             max_salary=('salary_top', 'max'),
             std_salary_bottom=('salary_bottom', 'std'),
