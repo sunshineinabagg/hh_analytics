@@ -2,14 +2,13 @@ import asyncio
 import logging
 from datetime import date, timedelta
 import httpx
-import private_settings
+
 from src.utils import json_loads
 
 
 class HeadHunterApi:
     _API_URL = 'https://api.hh.ru'
     _HH_USER_AGENT = 'hh_analytics/1.0 (sunshineinabagg@yandex.ru)'
-    __token = private_settings.TOKEN
 
     def __init__(self, client: httpx.AsyncClient):
         self.client = client
@@ -25,8 +24,7 @@ class HeadHunterApi:
 
     async def __send_request(self, method: str, **kwargs):
         response = await self.client.get(url=self._API_URL + method,
-                                         headers={'HH-User-Agent': self._HH_USER_AGENT,
-                                                  'Authorization': f'Bearer {self.__token}'},
+                                         headers={'HH-User-Agent': self._HH_USER_AGENT},
                                          **kwargs)
         return response
 

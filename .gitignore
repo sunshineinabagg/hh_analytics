@@ -3,3 +3,4 @@
 .git
 private_settings.py
 db.sqlite
+reports
