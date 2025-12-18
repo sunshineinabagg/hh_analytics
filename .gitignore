@@ -3,3 +3,4 @@
 .git
 db.sqlite
 reports
+__pycache__
