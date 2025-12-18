@@ -3,7 +3,7 @@ import pandas as pd
 from src.db_manager.db import Database
 
 
-class Analyzer:
+class Extractor:
     def __init__(self, db: Database):
         self._db = db
 
