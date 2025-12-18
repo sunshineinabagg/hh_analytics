@@ -15,7 +15,6 @@ db = Database()
 
 
 async def start_collect():
-    # Этот блок НЕ выполняется — он закомментирован в main()
     from src.data_collector.collector import Collector
     await db.async_connect()
     check_db = await db.create_table()
@@ -29,7 +28,6 @@ async def start_collect():
 
 
 def start_analytics():
-    """Запускает анализ и визуализацию на основе существующей db.sqlite"""
     db.connect()
     infographics = Infographics(db)
     infographics.generate_all()
