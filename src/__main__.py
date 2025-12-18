@@ -1,13 +1,10 @@
-# src/main.py
-
 import asyncio
 import logging
 
+import httpx
 from nest_asyncio import apply
 
-# Импорты с префиксом src. — обязательно при запуске через python -m src.main
 from src.db_manager.db import Database
-from src.analytics.analyzer import Analyzer
 from src.analytics.infographics import Infographics
 
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +20,6 @@ async def start_collect():
     await db.async_connect()
     check_db = await db.create_table()
     if check_db is None:
-        import httpx
         client = httpx.AsyncClient()
         await Collector(client, db).start()
         await client.aclose()
@@ -35,15 +31,14 @@ async def start_collect():
 def start_analytics():
     """Запускает анализ и визуализацию на основе существующей db.sqlite"""
     db.connect()
-    analyzer = Analyzer(db)
-    infographics = Infographics()
-    infographics.generate_all(analyzer)
+    infographics = Infographics(db)
+    infographics.generate_all()
     db.disconnect()
 
 
 async def main():
     logging.info('Application is running...')
-    # await start_collect()   # ← сбор отключён, используем готовую БД
+    await start_collect()
     start_analytics()
     logging.info('End.')
 

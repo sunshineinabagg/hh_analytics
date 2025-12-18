@@ -1,10 +1,10 @@
-# src/analytics/infographics.py
-
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from wordcloud import WordCloud
+
+from src.analytics.extractor import Extractor
 
 sns.set(style="whitegrid")
 plt.rcParams.update({'font.size': 10})
@@ -15,8 +15,8 @@ os.makedirs("reports/plots", exist_ok=True)
 class Infographics:
     """Класс для визуализации результатов аналитики."""
 
-    def __init__(self):
-        pass
+    def __init__(self, db):
+        self.ex = Extractor(db)
 
     def plot_salary_by_role(self, df: pd.DataFrame):
         """Задача 1: Зарплаты по направлениям"""
@@ -160,17 +160,17 @@ class Infographics:
         plt.savefig("reports/plots/top_employers.png")
         plt.close()
 
-    def generate_all(self, analyzer: 'Analyzer'):
+    def generate_all(self):
         """
         Генерирует все графики, используя методы Analyzer.
         Вызывает каждый метод аналитики и передаёт результат в визуализацию.
         """
-        self.plot_salary_by_role(analyzer.analyze_salaries_by_role())
-        self.plot_salary_by_city(analyzer.analyze_salaries_by_city())
-        self.plot_roles_count(analyzer.analyze_roles_count())
-        self.plot_salaries_by_experience(analyzer.analyze_salaries_by_experience())
-        self.plot_key_skills(analyzer.analyze_key_skills())
-        self.plot_schedule_analysis(analyzer.analyze_schedule())
-        self.plot_vacancy_dynamics(analyzer.analyze_vacancy_dynamics())
-        self.plot_employers_analysis(analyzer.analyze_employers())
+        self.plot_salary_by_role(self.ex.analyze_salaries_by_role())
+        self.plot_salary_by_city(self.ex.analyze_salaries_by_city())
+        self.plot_roles_count(self.ex.analyze_roles_count())
+        self.plot_salaries_by_experience(self.ex.analyze_salaries_by_experience())
+        self.plot_key_skills(self.ex.analyze_key_skills())
+        # self.plot_schedule_analysis(self.ex.analyze_schedule())
+        # self.plot_vacancy_dynamics(self.ex.analyze_vacancy_dynamics())
+        # self.plot_employers_analysis(self.ex.analyze_employers())
         print("✅ Все графики сохранены в reports/plots/")
